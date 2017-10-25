@@ -1,22 +1,23 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
 
-import { AppComponent, BobComponent } from './app.component';
-import { Seedling } from 'app/seedling';
+import { AppComponent } from "./app.component";
+import { SquareModule } from "app/grid/square/square.module";
+import { RowModule } from "app/grid/row/row.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    BobComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    SquareModule,
+    RowModule,
   ],
-  providers: [Seedling],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
