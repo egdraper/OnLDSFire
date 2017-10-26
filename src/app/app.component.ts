@@ -43,13 +43,13 @@ export class AppComponent {
       for (let l = 0; l < 100; l++ ) {
         const cell = this.grid[`x${l}:y${i}`]
         cell.neighbors = []
-        cell.neighbors[0] = this.grid[`x${l - 1}:y${i - 1}`];
-        cell.neighbors[1] = this.grid[`x${l}:y${i - 1}`];
+        cell.neighbors[5] = this.grid[`x${l - 1}:y${i - 1}`];
+        cell.neighbors[0] = this.grid[`x${l}:y${i - 1}`];
         cell.neighbors[2] = this.grid[`x${l + 1}:y${i - 1}`];
-        cell.neighbors[3] = this.grid[`x${l - 1}:y${i}`];
-        cell.neighbors[4] = this.grid[`x${l + 1}:y${i}`];
-        cell.neighbors[5] = this.grid[`x${l - 1}:y${i + 1}`];
-        cell.neighbors[6] = this.grid[`x${l}:y${i + 1}`];
+        cell.neighbors[4] = this.grid[`x${l - 1}:y${i}`];
+        cell.neighbors[1] = this.grid[`x${l + 1}:y${i}`];
+        cell.neighbors[6] = this.grid[`x${l - 1}:y${i + 1}`];
+        cell.neighbors[3] = this.grid[`x${l}:y${i + 1}`];
         cell.neighbors[7] = this.grid[`x${l + 1}:y${i + 1}`];
       }
 
