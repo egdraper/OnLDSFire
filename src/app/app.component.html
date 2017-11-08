@@ -1,9 +1,1 @@
-<div class="rows">
-  <app-row *ngFor="let r of gridDisplay" [squares]="r" (cellClick)="cellClick($event)"></app-row>
-
-  <div
-    class="character"
-    [style.left]="leftPosition + 'px'"
-    [style.top]="topPosition + 'px'"
-  ></div>
-</div>
+<app-grid></app-grid>

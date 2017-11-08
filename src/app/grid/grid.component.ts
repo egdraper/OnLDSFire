@@ -1,73 +1,70 @@
 import { Component, ViewChild, HostListener, ElementRef, ChangeDetectorRef } from "@angular/core";
+import { Character } from "app/character/character";
+import { ShortestPath } from "app/path/shortest-path";
+import { Cell } from "app/model/cell";
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  selector: "app-grid",
+  templateUrl: "./grid.component.html",
+  styleUrls: ["./grid.component.scss"]
 })
 export class GridComponent {
+  public characters: Character[] = []
+  public grid: {[cell: string]: any } = { };
+  public gridDisplay: any[][] = [];
 
-    // public square = [ { // 250
-    //     id: "S-BC",
-    //     parent: "B",
-    //     turain: "grass",
-    //     character: true,
-    //     positionY: ,
-    //     positionX: 50,
+  constructor(public shortestPath: ShortestPath) {
+    this.characters.push(new Character());
+    this.generateGrid();
+  }
 
-    // }]
+  public charSelect(char: Character) {
+    this.characters.forEach(c => c.isSelected = false);
+    char.select();
+  }
 
-    // public quadrent = [{ // 25
-    //     id: "Q-b",
-    //     squares: this.square
-    //  }]
+  public cellClick(e: any): void {
+    debugger 
+    if (e.x === 150 && e.y === 0) {
+      this.characters.push(new Character());
+    } else {
+      this.requestToMoveCharacter(e.input);
+    }
+  }
 
-    // public region = [{  // 25
-    //     id: "R-b",
-    //     squares: this.quadrent
-    //  }]
-    // public state = [{ // 25
-    //     id: "S-b",
-    //     regions: this.region
-    //  }
-    // ]
-    // public country = [{ // 25
-    //     id: "C-b",
-    //     states: this.state,
-    //  }
-    // ]
-    // public continent = [{ // 25
-    //     id: "T-b",
-    //     counties: this.square
-    //  }
-    // ]
-    
-    // public planet = [{ // 10,000
-    //     id: "P-b",
-    //     counties: this.square
-    //  }
-    // ]
+  public requestToMoveCharacter(toLocation: Cell) {
+    this.characters.filter(c => c.isSelected && c.isControllable).forEach(char => {
+      const posX = char.leftPosition / 50;
+      const posY = char.topPosition / 50;
+      const path = this.shortestPath.find(this.grid[`x${posX}:y${posY}`], toLocation);
+      char.startMovement(path);
+    })
+  }
 
-    // public Galaxies = [{ //100,000
+  private generateGrid() {
+    for (let i = 0; i < 100; i++) {
+      this.gridDisplay[i] = [];
 
-    // }]
+      for (let l = 0; l < 100; l++ ) {
+        const obstacle = ((i % 3 === 0 && l % 10 === 0) || (i % 10 === 0 && l === 3) || (i % 6 && l === 2));
+        this.grid[`x${l}:y${i}`] = { x: l, y: i, posX: l * 50, posY: i * 50, obstacle, };
+        this.gridDisplay[i][l] = this.grid[`x${l}:y${i}`];
+      }
+    }
 
-    // public universises = [{ //infinate
-
-    // }]
-
-    // constructor() {
-    //     for(let i = 0; i < 250; i++) {
-    //         for(let l = 0; l < 250; l++) {
-    //            this.square.push({ 
-    //             id: "S-BC" + l + i,
-    //             parent: "B",
-    //             turain: "grass",
-    //             character: true,
-    //             positionY: ,
-    //             positionX: 50,
-    //         }
-    //     }
-    // }
-
+    for (let i = 0; i < 100; i++) {
+      for (let l = 0; l < 100; l++ ) {
+        const cell = this.grid[`x${l}:y${i}`];
+        cell.neighbors = [];
+        cell.neighbors[5] = this.grid[`x${l + 1}:y${i + 1}`];
+        cell.neighbors[0] = this.grid[`x${l}:y${i - 1}`];
+        cell.neighbors[2] = this.grid[`x${l}:y${i + 1}`];
+        cell.neighbors[4] = this.grid[`x${l + 1}:y${i - 1}`];
+        cell.neighbors[1] = this.grid[`x${l + 1}:y${i}`];
+        cell.neighbors[6] = this.grid[`x${l - 1}:y${i + 1}`];
+        cell.neighbors[3] = this.grid[`x${l - 1}:y${i}`];
+        cell.neighbors[7] = this.grid[`x${l - 1}:y${i - 1}`];
+      }
+    } 
+  }
 }
